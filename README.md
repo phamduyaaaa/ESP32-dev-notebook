@@ -1,4 +1,4 @@
-# 📓 Notebook ESP32: Điều Khiển 2 Driver Qua Modbus + FreeRTOS
+# 📓 Notebook ESP32: Điều Khiển 2 Driver Qua Modbus485 + FreeRTOS + ROS2
 
 > _Ghi chú quá trình thực hiện điều khiển động cơ qua giao thức Modbus RTU sử dụng ESP32 và FreeRTOS._
 
