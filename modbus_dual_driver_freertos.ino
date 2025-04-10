@@ -58,8 +58,6 @@ TaskHandle_t xTask1Handle = NULL;
 TaskHandle_t xTask2Handle = NULL;
 
 const uint16_t STACK_SIZE = 2048;
-const uint8_t PRO_CPU = 0;
-const uint8_t APP_CPU = 1;
 
 
 // ==================================================
@@ -122,11 +120,11 @@ void Task1(void *pvParameters) {
       // CH4: TURN LEFT | TURN RIGHT
       if (pw4 > bottom_turnleft_threshold &&pw4 < top_turnleft_threshold){
         int turn_speed = map(pw4, 1470, 1690, 0, 80);
-        rpm_left = turn_speed;
+        rpm_left += turn_speed;
       }
       else if (pw4 > bottom_turnright_threshold && pw4 < top_turnright_threshold){
         int turn_speed = map(pw4, 1200, 1448, 80, 0);
-        rpm_left = -turn_speed;
+        rpm_left -= turn_speed;
       }    
     }
     else{
@@ -173,11 +171,11 @@ void Task2(void *pvParameters) {
       // CH4: TURN LEFT | TURN RIGHT
       if (pw4 > bottom_turnleft_threshold &&pw4 < top_turnleft_threshold){
         int turn_speed = map(pw4, 1470, 1690, 0, 80);
-        rpm_right =  turn_speed;
+        rpm_right +=  turn_speed;
       }
       else if (pw4 > bottom_turnright_threshold && pw4 < top_turnright_threshold){
         int turn_speed = map(pw4, 1200, 1448, 80, 0);
-        rpm_right =  -turn_speed;
+        rpm_right -=  turn_speed;
       }    
     }
     else{
@@ -298,8 +296,8 @@ void setup() {
   driverR.set_accel_time(R_MS_A1, R_MS_A2);
   driverR.set_accel_time(R_MS_D1, R_MS_D2);
 
-  xTaskCreatePinnedToCore(Task1, "Task1", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTask1Handle, PRO_CPU);
-  xTaskCreatePinnedToCore(Task2, "Task2", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTask2Handle, APP_CPU);
+  xTaskCreatePinnedToCore(Task1, "Task1", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTask1Handle, 0);
+  xTaskCreatePinnedToCore(Task2, "Task2", STACK_SIZE, NULL, tskIDLE_PRIORITY, &xTask2Handle, 0);
 
 }
 void loop() {
