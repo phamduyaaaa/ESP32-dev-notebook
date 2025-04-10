@@ -1,4 +1,4 @@
-# 📓 Notebook ESP32: Điều Khiển 2 Driver Qua Modbus485 + FreeRTOS + ROS2
+# 📓 Notebook ESP32: Điều Khiển 2 Driver
 
 > _Ghi chú quá trình thực hiện điều khiển động cơ qua giao thức Modbus RTU sử dụng ESP32 và FreeRTOS._
 
@@ -66,6 +66,15 @@ thì hạ dần xuống.
 - Giao tiếp dạng master-slave, mỗi driver là một thiết bị slave còn ESP32 là master
 - Gửi/nhận dữ liệu qua UART bằng chuẩn RS485
 - Sử dụng thư viện `ModbusMaster` trong Arduino
+- Truyền tuần tự, không song song: Vì RS485 là half-duplex, chỉ 1 thiết bị được truyền tại một thời điểm.
+
+- Master phải chờ nhận xong phản hồi của Slave trước khi chuyển sang Slave khác.
+
+- Không có "broadcast trả lời": Modbus có lệnh broadcast (địa chỉ 0) → tất cả slave thực hiện nhưng không phản hồi.
+
+- Ví dụ: 00 06 00 01 00 64 CRC → yêu cầu ghi giá trị 100 vào thanh ghi 1 ở tất cả các slave.
+
+- Master phải quản lý thời gian timeout: Nếu gửi cho Slave 1 nhưng không có phản hồi trong thời gian quy định (VD: 1 giây), thì Master cần bỏ qua và chuyển sang Slave 2.
 
 ### 2. **FreeRTOS trên ESP32**
 - Giúp tổ chức chương trình theo luồng riêng biệt (tasks)
