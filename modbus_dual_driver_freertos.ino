@@ -58,7 +58,6 @@ TaskHandle_t xTask1Handle = NULL;
 TaskHandle_t xTask2Handle = NULL;
 
 const uint16_t STACK_SIZE = 2048;
-const uint8_t tskIDLE_PRIORITY = 1;
 const uint8_t PRO_CPU = 0;
 const uint8_t APP_CPU = 1;
 
